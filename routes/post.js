@@ -36,7 +36,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => { // body-
   try {
     req.body.content.match(/a/);
     const post = await Post.create({
-      content: req.body.content,
+      contents: req.body.content,
       img: req.body.url,
       UserId: req.user.id,
     });
