@@ -45,15 +45,13 @@ sequelize.sync({ force: false })
 
 passportConfig();
 
-app.use((req, res, next) => {
-  if (process.env.NODE_ENV === 'production') {
-    morgan('combined')(req, res, next);
-    helmet(req, res, next);
-    hpp(req, res, next);
-  } else {
-    morgan('dev')(req, res, next);
-  }
-});
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined'));
+  app.use(helmet());
+  app.use(hpp());
+} else {
+  morgan('dev');
+}
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/img', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
@@ -71,9 +69,9 @@ const sessionOptions = session({
   store: new RedisStore({ client: redisClient }),
 });
 
-if (process.env.NODE_ENV === 'production') {
-  sessionOptions.proxy = true;
-}
+// if (process.env.NODE_ENV === 'production') {
+//   sessionOptions.proxy = true;
+// }
 
 app.use(sessionOptions);
 app.use(passport.initialize());

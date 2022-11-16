@@ -12,11 +12,11 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get('/profile', isLoggedIn, (req, res, next) => {
+router.get('/profile', isLoggedIn, (req, res) => {
   res.render('profile', { title: 'My INFO - NodeBird' });
 });
 
-router.get('/join', isNotLoggedIn, (req, res, next) => {
+router.get('/join', isNotLoggedIn, (req, res) => {
   res.render('join', { title: 'Sign Up - NodeBird' });
 });
 
