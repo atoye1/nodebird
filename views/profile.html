@@ -1,0 +1,41 @@
+{% extends 'layout.html' %} {% block content %}
+<div class="timeline">
+  <div class="followings half">
+    <h1>{{user}}</h1>
+    <h2>팔로잉 목록</h2>
+    {% if user.Followings %} {% for following in user.Followings %}
+    <div>
+      {{following.nick}}<button
+        data-my-id="{{user.id}}"
+        data-target-id="{{following.id}}"
+        id="cancelFollowing"
+      >
+        팔로잉끊기
+      </button>
+    </div>
+    {% endfor %} {% endif %}
+  </div>
+  <div class="followers half">
+    <h2>팔로워 목록</h2>
+    {% if user.Followers %} {% for follower in user.Followers %}
+    <div>{{follower.nick}}</div>
+    {% endfor %} {% endif %}
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+  document
+    .getElementById('cancelFollowing')
+    .addEventListener('click', function () {
+      alert(this.dataset.myId + ' and ' + this.dataset.targetId)
+      axios
+        .delete(`/user/${this.dataset.myId}/follow?id=${this.dataset.targetId}`)
+        .then(() => {
+          location.reload()
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    })
+</script>
+{% endblock %}
